@@ -8,17 +8,17 @@ function findBookById(books, id) {
 }
 
 function partitionBooksByBorrowedStatus(books) {
-  const notReturned = books.filter(book=> book.borrows[0].returned === false);
-  const returned = books.filter(book => book.borrows[0].returned === true);
+  const notReturned = books.filter(book=> book.borrows[0].returned === false); // filter out non returned books
+  const returned = books.filter(book => book.borrows[0].returned === true); // filter out returned books
 
-  return [notReturned, returned];
+  return [notReturned, returned]; // return an array containing both filtered arrays 
 }
 
 function getBorrowersForBook(book, accounts) {
-  const borrowed = [];
-  book.borrows.forEach((book, index) => {
-    borrowed.push(accounts.find((account) => account.id === book.id));
-    borrowed[index] = { ...borrowed[index], ...book };
+  const borrowed = []; // declare an empty array
+  book.borrows.forEach((transaction, index) => { // for every borrowed transaction in the given book
+    borrowed.push(accounts.find((account) => account.id === transaction.id)); // find the borrower in each transaction and push to the borrowed array
+    borrowed[index] = { ...borrowed[index], ...transaction }; // combining the account and transaction info to the index that was just pushed
   });
   return borrowed.splice(0, 10);
 }
